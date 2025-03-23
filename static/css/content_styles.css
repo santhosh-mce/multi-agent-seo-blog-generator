@@ -1,0 +1,21 @@
+.para-format h2{
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 0.5em;
+    margin-top: 1em;
+}
+
+.para-format h3{
+    font-size: 1.2em;
+    font-weight: 600;
+    margin-bottom: 0.5em;
+    margin-top: 1em;
+}
+
+.para-format p{
+    font-size: 1em;
+    font-weight: 400;
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
+    line-height: 1.6;
+}

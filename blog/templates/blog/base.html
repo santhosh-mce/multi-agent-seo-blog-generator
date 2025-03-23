@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Blog Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{% static 'css/content_styles.css' %}">
+</head>
+<body class="bg-gray-100 text-gray-900">
+
+    <div class="min-h-screen flex flex-col items-center justify-center p-4">
+        <header class="w-full bg-blue-600 text-white py-4 text-center shadow-md fixed top-0 left-0 z-50">
+            <h1 class="text-2xl font-bold">SEO Blog Generator</h1>
+        </header>
+        
+
+        <main class="w-full rounded-lg p-6 mt-6 pt-16">
+            {% block content %}
+            {% endblock %}
+        </main>
+
+        <footer class="w-full bg-gray-100 text-center py-4 text-gray-600 fixed bottom-0 left-0">
+            &copy; 2025 SEO Blog Generator. All rights reserved.
+        </footer>        
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,24 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+<h1>{{ blog_post.title }}</h1>
+<div id="content-output"></div>
+<p><strong>SEO Keywords:</strong> {{ blog_post.seo_keywords }}</p>
+
+<!-- Download Buttons -->
+<div>
+    <a href="{% url 'download_blog' blog_post.id 'md' %}" download>Download as Markdown</a> |
+    <a href="{% url 'download_blog' blog_post.id 'txt' %}" download>Download as TXT</a> |
+    <a href="{% url 'download_blog' blog_post.id 'html' %}" download>Download as HTML</a> |
+    <a href="{% url 'download_blog' blog_post.id 'pdf' %}" download>Download as PDF</a>
+</div>
+
+<script src="https://unpkg.com/markdown-it@8.4.2/dist/markdown-it.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const output = document.getElementById("content-output");
+        const md = window.markdownit();
+        output.innerHTML = md.render(`{{ blog_post.content|escapejs }}`);
+    });
+</script>
+{% endblock %}
