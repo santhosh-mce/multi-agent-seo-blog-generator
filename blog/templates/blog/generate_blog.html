@@ -46,7 +46,37 @@
             </a>
         </div>
         {% endcomment %}
+
+
+        <!-- Download Button -->
+        <a href="{% url 'save_blog' blog_post.id %}" 
+        class="mt-4 inline-block bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md shadow">
+         Download as .md
+        </a>
     </div>
+    <style>
+        .para-format h2{
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 0.5em;
+            margin-top: 1em;
+        }
+        
+        .para-format h3{
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 0.5em;
+            margin-top: 1em;
+        }
+        
+        .para-format p{
+            font-size: 1em;
+            font-weight: 400;
+            margin-bottom: 0.5em;
+            margin-top: 0.5em;
+            line-height: 1.6;
+        }
+    </style>
 
     <!-- Markdown Rendering Script -->
     <script src="https://unpkg.com/markdown-it@8.4.2/dist/markdown-it.min.js"></script>

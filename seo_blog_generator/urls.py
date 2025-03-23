@@ -16,10 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from blog.views import generate_blog, index
+from blog.views import generate_blog, index, save_blog
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('', index, name='index'),  # Map the root URL to the index view
     path('generate/', generate_blog, name='generate_blog'),
+    path('save/<int:post_id>/', save_blog, name='save_blog'),
 ]

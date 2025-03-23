@@ -12,6 +12,7 @@ import os
 from django.http import HttpResponse
 import markdown
 import pdfkit
+from django.utils.text import slugify
 
 def generate_blog(request):
     topics = find_trending_hr_topics()  # ✅ Define `topics` at the start
@@ -42,26 +43,21 @@ def index(request):
 
 
 
-# def download_blog(request, post_id, format_type):
-#     blog_post = get_object_or_404(BlogPost, id=post_id)
-
-#     if format_type == "md":
-#         response = HttpResponse(blog_post.content, content_type="text/markdown")
-#         response["Content-Disposition"] = f'attachment; filename="{blog_post.title}.md"'
-#         return response
-
-#     elif format_type == "txt":
-#         response = HttpResponse(blog_post.content, content_type="text/plain")
-#         response["Content-Disposition"] = f'attachment; filename="{blog_post.title}.txt"'
-#         return response
-
-#     elif format_type == "html":
-#         html_content = f"<h1>{blog_post.title}</h1><p>{blog_post.content}</p>"
-#         response = HttpResponse(html_content, content_type="text/html")
-#         response["Content-Disposition"] = f'attachment; filename="{blog_post.title}.html"'
-#         return response
-
-
-#     return HttpResponse("Invalid format", status=400)
-
+def save_blog(request, post_id):
+    # Fetch the blog post
+    blog_post = get_object_or_404(BlogPost, id=post_id)
+    
+    # Create the file content
+    file_content = f"# {blog_post.title}\n{blog_post.content}"
+    
+    # Define the file name
+    file_name = f"{slugify(blog_post.title)}.md"  # Save as .md file
+    # file_name = f"{slugify(blog_post.title)}.txt"  # Save as .txt file
+    
+    # Create an HTTP response with the file
+    response = HttpResponse(file_content, content_type='text/markdown')  # For .md
+    # response = HttpResponse(file_content, content_type='text/plain')  # For .txt
+    response['Content-Disposition'] = f'attachment; filename="{file_name}"'
+    
+    return response
 
