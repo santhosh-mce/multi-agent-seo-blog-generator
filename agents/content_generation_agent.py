@@ -34,7 +34,7 @@ def generate_content(outline):
                 section["content"] = response.content if hasattr(response, "content") else str(response)
 
                 # Format without <h2> or <h3>, use <strong> for emphasis
-                content += f"<h2>{section['heading']}</h2>\n<p>{section['content']}</p>\n"
+                content += f"{section['heading']}\n{section['content']}\n"
                 last_request_time = time.time()  # Update last request time
                 break  # Exit retry loop if successful
             except Exception as e:
@@ -43,6 +43,6 @@ def generate_content(outline):
                     time.sleep(retry_delay)  # Wait before retrying
                 else:
                     section["content"] = f"Failed to generate content for {section['heading']} due to API error."
-                    content += f"<h2>{section['heading']}</h2>\n<p>{section['content']}</p>\n"
+                    content += f"{section['heading']}\n{section['content']}\n"
 
     return content

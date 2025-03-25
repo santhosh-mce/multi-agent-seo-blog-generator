@@ -8,11 +8,17 @@ from agents.review_agent import review_content
 from django.conf import settings
 from django.shortcuts import get_object_or_404, render
 import os
+import bleach
+from xhtml2pdf import pisa
 
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseServerError
 import markdown
 import pdfkit
 from django.utils.text import slugify
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from reportlab.lib.utils import simpleSplit
+import re
 
 def generate_blog(request):
     topics = find_trending_hr_topics()  # ✅ Define `topics` at the start
@@ -60,4 +66,63 @@ def save_blog(request, post_id):
     response['Content-Disposition'] = f'attachment; filename="{file_name}"'
     
     return response
+
+def save_blog_html(request, post_id):
+    # Fetch the blog post
+    blog_post = get_object_or_404(BlogPost, id=post_id)
+    
+    # Convert markdown content to HTML
+    html_content = markdown.markdown(blog_post.content)
+    
+    # Create the full HTML document
+    file_content = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>{blog_post.title}</title>
+        <meta charset="UTF-8">
+        <meta name="keywords" content="{blog_post.seo_keywords}">
+        <style>
+            body {{ font-family: Arial, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; }}
+            h1 {{ color: #2c3e50; border-bottom: 1px solid #eee; }}
+            h2 {{ color: #3498db; }}
+            h3 {{ color: #2980b9; }}
+        </style>
+    </head>
+    <body>
+        <h1>{blog_post.title}</h1>
+        {html_content}
+    </body>
+    </html>
+    """
+    
+    # Define the file name
+    file_name = f"{slugify(blog_post.title)}.html"
+    
+    # Create an HTTP response with the file
+    response = HttpResponse(file_content, content_type='text/html')
+    response['Content-Disposition'] = f'attachment; filename="{file_name}"'
+    
+    return response
+
+
+
+def save_blog_pdf(request, post_id):
+    blog_post = get_object_or_404(BlogPost, id=post_id)
+    file_name = f"{slugify(blog_post.title)}.pdf"
+
+    html_content = markdown.markdown(blog_post.content)  # Convert Markdown to HTML
+    pdf_file = HttpResponse(content_type='application/pdf')
+    pdf_file['Content-Disposition'] = f'attachment; filename="{file_name}"'
+
+    pisa.CreatePDF(html_content, dest=pdf_file)  # Convert HTML to PDF
+    return pdf_file
+
+
+
+
+
+
+
+
 

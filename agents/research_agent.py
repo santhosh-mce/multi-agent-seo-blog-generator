@@ -29,7 +29,7 @@ def find_trending_hr_topics():
         return cached_topics
 
     prompt = (
-        "List 5 trending HR topics for 2025 in Python list format, without explanations. "
+        "List 5 trending HR topics for 2024 in Python list format, without explanations. "
         "Example: ['Topic1', 'Topic2', 'Topic3', 'Topic4', 'Topic5']"
     )
 
@@ -61,7 +61,7 @@ def find_trending_hr_topics():
                 logging.warning("Failed to parse response, returning fallback topics.")
 
             # If parsing fails, return fallback topics
-            return ["Remote Work", "Employee Well-being", "Hybrid Work Models", "AI in HR", "Diversity and Inclusion"]
+            return ["Skills-based hiring", "Employee well-being and mental health", "AI and automation in HR", "The Metaverse and the future of work", "Data-driven HR decisions"]
 
         except Exception as e:
             logging.error(f"Attempt {attempt + 1} failed: {e}")
@@ -69,4 +69,7 @@ def find_trending_hr_topics():
                 time.sleep(retry_delay)  # Wait before retrying
             else:
                 # Fallback topics if all retries fail
-                return ["Remote Work", "Employee Well-being", "Hybrid Work Models", "AI in HR", "Diversity and Inclusion"]
+                return ["Skills-based hiring", "Employee well-being and mental health", "AI and automation in HR", "The Metaverse and the future of work", "Data-driven HR decisions"]
+
+
+
