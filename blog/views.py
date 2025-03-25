@@ -68,13 +68,12 @@ def save_blog(request, post_id):
     return response
 
 def save_blog_html(request, post_id):
-    # Fetch the blog post
     blog_post = get_object_or_404(BlogPost, id=post_id)
-    
-    # Convert markdown content to HTML
     html_content = markdown.markdown(blog_post.content)
-    
-    # Create the full HTML document
+
+    # Sanitize to prevent malicious scripts
+    clean_html_content = bleach.clean(html_content, tags=['h1', 'h2', 'h3', 'p', 'ol','ul', 'li', 'strong', 'em', 'a', 'br'])
+
     file_content = f"""
     <!DOCTYPE html>
     <html>
@@ -91,20 +90,16 @@ def save_blog_html(request, post_id):
     </head>
     <body>
         <h1>{blog_post.title}</h1>
-        {html_content}
+        {clean_html_content}
     </body>
     </html>
     """
-    
-    # Define the file name
     file_name = f"{slugify(blog_post.title)}.html"
-    
-    # Create an HTTP response with the file
     response = HttpResponse(file_content, content_type='text/html')
     response['Content-Disposition'] = f'attachment; filename="{file_name}"'
-    
     return response
 
+    
 
 
 def save_blog_pdf(request, post_id):
