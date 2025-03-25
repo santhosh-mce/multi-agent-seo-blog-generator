@@ -114,7 +114,8 @@ def save_blog_pdf(request, post_id):
     return pdf_file
 
 
-
+def custom_404(request, exception):
+    return render(request, 'blog/404.html', status=404)
 
 
 
